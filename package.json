@@ -1,0 +1,44 @@
+{
+  "name": "krono-flow-puzzle",
+  "version": "0.0.1",
+  "maintainers": [
+    {
+      "name": "army8735",
+      "email": "army8735@qq.com"
+    }
+  ],
+  "scripts": {
+    "dev": "rollup -c rollup.dev.config.mjs --watch"
+  },
+  "peerDependencies": {
+    "krono-flow": "*"
+  },
+  "dependencies": {
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.1",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/uuid": "^9.0.8",
+    "rimraf": "^5.0.10",
+    "rollup": "^4.46.2",
+    "tslib": "^2.8.1",
+    "webstorm-disable-index": "^1.2.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "author": "army8735 <army8735@qq.com>",
+  "repository": "git@github.com:army8735/krono-flow.git"
+}
