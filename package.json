@@ -11,10 +11,9 @@
     "dev": "rollup -c rollup.dev.config.mjs --watch"
   },
   "peerDependencies": {
-    "krono-flow": "*"
+    "krono-flow": "^0.0.2"
   },
   "dependencies": {
-    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.8",
@@ -25,6 +24,7 @@
     "rimraf": "^5.0.10",
     "rollup": "^4.46.2",
     "tslib": "^2.8.1",
+    "typescript": "^5.9.3",
     "webstorm-disable-index": "^1.2.0"
   },
   "main": "dist/index.js",
