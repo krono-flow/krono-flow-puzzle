@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>kronoFlow</title>
+  <link href="../../krono-flow/dist/style.css" media="all" rel="stylesheet"/>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      /*width: 100%;*/
+      /*height: 100%;*/
+      /*overflow: hidden;*/
+      font-family: arial, sans-serif;
+      background: #FFF;
+    }
+    #canvasC {
+      position: relative;
+      margin: 5px;
+      width: 800px;
+      height: 600px;
+    }
+    canvas {
+      display: block;
+      margin: 1px;
+      width: 100%;
+      height: 100%;
+      background: #EEE;
+    }
+    #range {
+      width: 500px;
+    }
+  </style>
+</head>
+<body>
+<div id="canvasC"></div>
+<input id="range" type="range" min="0" step="1" value="0">
+<span id="current"></span>:
+<span id="duration"></span>
+<br/>
+<button id="play">play</button>
+<button id="pause">pause</button>
+<input id="num" type="number"/>
+<button id="encode">encode</button>
+<br/>
+<script src="../../krono-flow/dist/index.js"></script>
+<script src="../dist/index.js"></script>
+<script>
+  kronoFlow.config.maxTextureSize = 4096;
+  kronoFlow.config.gopMinDuration = 4000;
+  kronoFlow.config.decodeNextDuration = 2000;
+  kronoFlow.config.releasePrevDuration = 2000;
+  kronoFlow.config.indexedDB = true;
+  kronoFlow.style.font.registerLocalFonts();
+
+  const dpi = 1;
+  const $canvasC = document.querySelector('#canvasC');
+  const { clientWidth, clientHeight } = $canvasC;
+  const canvas = document.createElement('canvas');
+  canvas.width = clientWidth * dpi;
+  canvas.height = clientHeight * dpi;
+  $canvasC.appendChild(canvas);
+
+  const $current = document.querySelector('#current');
+  const $duration = document.querySelector('#duration');
+  const $range = document.querySelector('#range');
+
+  const root = new kronoFlow.node.Root({
+  });
+  root.appendTo(canvas);
+
+  const container = new kronoFlow.node.Container({
+    name: 'container',
+    style: {
+      left: 40,
+      top: 40,
+      width: 512,
+      height: 512,
+      perspective: 2000,
+    },
+  });
+  root.appendChild(container);
+
+  const node = new kronoFlow.node.Bitmap({
+    name: '动',
+    src: '../../krono-flow/demo/动.jpg',
+    style: {
+      left: 0,
+      top: 0,
+      width: 512,
+      height: 512,
+      visibility: 'hidden',
+    },
+  });
+  container.appendChild(node);
+
+  kronoFlowPuzzle.puzzleAnimate(node, {
+    duration: 2000,
+    fill: 'both',
+    easing: 'ease-in-out',
+  });
+
+  $range.max = root.aniController.duration;
+  $current.innerHTML = '0';
+  $duration.innerHTML = $range.max;
+  root.aniController.on('frame', () => {
+    $range.value = $current.innerHTML = root.aniController.currentTime;
+  });
+  $range.oninput = () => {
+    root.aniController.gotoAndStop(+$range.value);
+  };
+
+  document.querySelector('#play').addEventListener('click', () => {
+    root.aniController.play();
+  });
+  document.querySelector('#pause').addEventListener('click', () => {
+    root.aniController.pause();
+  });
+</script>
+</body>
+</html>

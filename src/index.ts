@@ -3,11 +3,16 @@ import kronoFlow from 'krono-flow';
 
 const H = kronoFlow.math.geom.H;
 
+const FILTER = [
+  ['saturate(100%)', 'contrast(100%)', 'brightness(100%)', 'gaussBlur(0px)', 'bloom(0.9, 0.5)', 'lightDark(10px, 45deg)'],
+  ['saturate(170%)', 'contrast(130%)', 'brightness(130%)', 'gaussBlur(1px)', 'bloom(0.5, 0.5)', 'lightDark(10px, 45deg)'],
+];
+
 const animationList = [
   [
     {
-      translateX: '-20%',
-      translateY: '-20%',
+      translateX: '-30%',
+      translateY: '-30%',
       translateZ: 100,
       rotateZ: 10,
       visibility: 'visible',
@@ -29,8 +34,8 @@ const animationList = [
   ],
   [
     {
-      translateX: '10%',
-      translateY: '-40%',
+      translateX: '20%',
+      translateY: '-50%',
       rotateZ: 20,
       visibility: 'visible',
     },
@@ -51,8 +56,8 @@ const animationList = [
   ],
   [
     {
-      translateX: '10%',
-      translateY: '15%',
+      translateX: '20%',
+      translateY: '25%',
       rotateZ: -30,
       visibility: 'visible',
     },
@@ -73,8 +78,8 @@ const animationList = [
   ],
   [
     {
-      translateX: '-25%',
-      translateY: '-5%',
+      translateX: '-40%',
+      translateY: '5%',
       rotateZ: -25,
       visibility: 'visible',
     },
@@ -129,6 +134,27 @@ const pAnimation: kronoFlow.animation.JKeyFrame[] = [
     scaleX: 1,
     scaleY: 1,
     offset: 1,
+  },
+];
+
+const fAnimation = [
+  {
+    filter: FILTER[0],
+  },
+  {
+    filter: FILTER[0],
+    offset: 0.4,
+  },
+  {
+    filter: FILTER[1],
+    offset: 0.6,
+  },
+  {
+    filter: FILTER[1],
+    offset: 0.8,
+  },
+  {
+    filter: FILTER[0],
   },
 ];
 
@@ -188,8 +214,9 @@ export function puzzleAnimate(node: kronoFlow.node.Node, options: kronoFlow.anim
     subContainer.appendChild(mask);
     subContainer.appendChild(clone);
     subContainer.animate(animationList[i], options);
+    clone.animate(fAnimation, options);
   }
-  a.on('beforeFrame', () => {
+  a.on('frame', () => {
     const computedStyle = container.computedStyle;
     node.updateStyle({
       rotateX: computedStyle.rotateX,
@@ -197,19 +224,21 @@ export function puzzleAnimate(node: kronoFlow.node.Node, options: kronoFlow.anim
       rotateZ: computedStyle.rotateZ,
       scaleX: computedStyle.scaleX,
       scaleY: computedStyle.scaleY,
-      // visibility: subContainer.computedStyle.visibility === kronoFlow.style.define.VISIBILITY.HIDDEN ? 'visible' : 'hidden',
     });
   });
   node.animate([
     {
       visibility: 'hidden',
+      filter: FILTER[0],
     },
     {
       visibility: 'visible',
+      filter: FILTER[1],
       offset: 0.5,
     },
     {
       visibility: 'visible',
+      filter: FILTER[0],
     },
   ], options);
 }
